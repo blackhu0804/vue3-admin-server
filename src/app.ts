@@ -3,6 +3,7 @@ import cors from '@koa/cors'
 import logger from 'koa-logger'
 import bodyparser from 'koa-bodyparser'
 import authRoutes from './routes/auth'
+import UserRouters from './routes/user'
 import { jwtSecret } from './config/auth'
 import jwt from 'koa-jwt'
 
@@ -35,6 +36,7 @@ app.use(jwt(({ secret: jwtSecret })).unless({
 
 // routes
 app.use(authRoutes.routes()).use(authRoutes.allowedMethods())
+app.use(UserRouters.routes()).use(UserRouters.allowedMethods())
 
 const port = process.env.PORT || '3000'
 app.listen(port, () => {

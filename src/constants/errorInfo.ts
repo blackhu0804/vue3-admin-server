@@ -1,4 +1,8 @@
-export default {
+/**
+ * @description 失败信息集合，包括 code 和 message
+ */
+ export default {
+  // 用户名已存在
   registerUserNameExistInfo: {
     code: 10001,
     message: '用户名已存在'
@@ -48,5 +52,61 @@ export default {
   updateUserRoleFailInfo: {
     code: 10011,
     message: '用户角色修改失败,请重试'
+  },
+  addAccessFailInfo: {
+    code: 10012,
+    message: '菜单添加失败'
+  },
+  getAccessAllFailInfo: {
+    code: 10013,
+    message: '获取全部菜单失败'
+  },
+  removeAccessFailInfo: {
+    code: 10014,
+    message: '删除菜单失败'
+  },
+  updateAccessFailInfo: {
+    code: 10015,
+    message: '编辑菜单失败'
+  },
+  addRoleFailInfo: {
+    code: 10016,
+    message: '添加角色失败'
+  },
+  addRoleNameExistInfo: {
+    code: 10017,
+    message: '角色已存在, 不能重复添加'
+  },
+  updateRoleFailInfo: {
+    code: 10018,
+    message: '编辑角色失败'
+  },
+  updateRoleNameExistInfo: {
+    code: 10019,
+    message: '编辑失败，已存在同名角色'
+  },
+  removeRoleFailInfo: {
+    code: 10020,
+    message: '角色删除失败'
+  },
+  allocRoleAccessFailInfo: {
+    code: 10021,
+    message: '角色分配权限失败'
+  },
+  getRoleAccessFailInfo: {
+    code: 10022,
+    message: '根据角色获取权限失败'
+  },
+  updateUserExistFailInfo: {
+    code: 10023,
+    message: '用户信息修改失败，已存在同名用户'
+  },
+  allocUserRoleFailInfo: {
+    code: 10024,
+    message: '用户角色分配失败'
+  },
+  accountForbiddenFailInfo: {
+    code: 10027,
+    message: '登录失败，账号已被禁用！'
   }
 }

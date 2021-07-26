@@ -11,11 +11,10 @@ export const createUser = async ({ username, password, email, mobile, status, av
     password,
     email,
     mobile,
-    status,
-    avatar
+    status
   })
 
-  return result.toJSON()
+  return result.toJSON() as UserModelProps
 }
 
 
@@ -40,5 +39,5 @@ export const getUserInfo = async ({ username, password, id}: UserWhereProps) => 
   })
   if (result === null) return null
 
-  return result.toJSON() as UserWhereProps
+  return result.toJSON() as UserModelProps
 }

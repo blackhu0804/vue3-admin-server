@@ -41,3 +41,8 @@ export class ErrorResponse extends BaseResponse {
     })
   }
 }
+
+export const createErrorResponse = (errInfo: any) => {
+  const { code, message } = errInfo
+  return new ErrorResponse(code, message)
+}
