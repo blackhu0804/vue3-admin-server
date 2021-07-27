@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize'
-const sequelize = new Sequelize('vue3-admin', 'root', '123456', {
+const sequelize = new Sequelize('vue3-admin', 'root', 'HTH1224dd', {
   host: 'localhost',
   dialect: 'mysql',
   timezone: '+08:00',
