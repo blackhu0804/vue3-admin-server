@@ -45,7 +45,6 @@ router.put('/menu/:id', async (ctx: any) => {
  */
 router.patch('/menu/update', async (ctx: any) => {
   const { access } = ctx.request.body
-  console.log(ctx.request.body)
   ctx.body = await updateBulkAccessController(access)
 })
 

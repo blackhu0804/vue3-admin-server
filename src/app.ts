@@ -5,6 +5,7 @@ import bodyparser from 'koa-bodyparser'
 import authRoutes from './routes/auth'
 import UserRouters from './routes/user'
 import AccessRouters from './routes/access'
+import RoleRouters from './routes/role'
 import { jwtSecret } from './config/auth'
 import jwt from 'koa-jwt'
 
@@ -39,6 +40,7 @@ app.use(jwt(({ secret: jwtSecret })).unless({
 app.use(authRoutes.routes()).use(authRoutes.allowedMethods())
 app.use(UserRouters.routes()).use(UserRouters.allowedMethods())
 app.use(AccessRouters.routes()).use(AccessRouters.allowedMethods())
+app.use(RoleRouters.routes()).use(RoleRouters.allowedMethods())
 
 const port = process.env.PORT || '3000'
 app.listen(port, () => {
