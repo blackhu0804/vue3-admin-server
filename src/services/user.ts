@@ -1,5 +1,5 @@
 import { UserInfo } from './types'
-import { UserModel, UserRoleModel } from '../db/models'
+import { RolesModel, UserModel, UserRoleModel } from '../db/models'
 import User, { RegisterModel } from '../db/models/user'
 
 // 获取全部用户
@@ -18,18 +18,18 @@ export const getAllUserService = async (offset = 0, limit = 10, query: Record<st
         limit,
         offset: limit * offset,
         distinct: true,
-        // include: [
-            // {
-            //     model: UserRoleModel,
-            //     attributes: ['id'],
-            //     include: [
-            //         {
-            //             model: RolesModel,
-            //             attributes: ['id', 'name', 'description']
-            //         }
-            //     ]
-            // }
-        // ]
+        include: [
+            {
+                model: UserRoleModel,
+                attributes: ['id'],
+                include: [
+                    {
+                        model: RolesModel,
+                        attributes: ['id', 'name', 'description']
+                    }
+                ]
+            }
+        ]
     })
 
     const users = rows.map(row => {

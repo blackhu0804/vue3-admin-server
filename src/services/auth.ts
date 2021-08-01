@@ -66,6 +66,7 @@ export const getUserInfoAndRoles = async (id: number) => {
 
   if (!result) return null
   const user = result.toJSON() as UserInfo
+  console.log(user)
   user.roles = user.UserRoles?.map(item => item.Role)
   delete user.UserRoles
   return user

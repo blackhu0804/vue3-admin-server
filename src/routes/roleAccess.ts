@@ -27,7 +27,7 @@ router.get('/:id', async (ctx: any) => {
 
 router.post('/role/access', async (ctx: any) => {
   const { roles } = ctx.request.body
-  const ids = roles.map(Number)
+  const ids = roles?.map(Number)
   ctx.body = await getAccessbyRolesController(ids)
 })
 
