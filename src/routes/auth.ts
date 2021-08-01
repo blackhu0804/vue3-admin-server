@@ -1,5 +1,5 @@
 import Router from '@koa/router'
-import { registerController, loginController } from '../controller/auth'
+import { registerController, loginController, UserInfoController } from '../controller/auth'
 import { RegisterModel } from '../db/models/user'
 
 const router = new Router({
@@ -17,6 +17,11 @@ router.post('/register', async ctx => {
 router.post('/login', async (ctx: any) => {
   const { username, password } = ctx.request.body
   ctx.body = await loginController({ username, password })
+})
+
+router.post('/info', async (ctx: any) => {
+  const token = ctx.header.authorization || ctx.request.body.token
+  ctx.body = await UserInfoController(token)
 })
 
 export default router

@@ -1,5 +1,5 @@
 import { UserInfo } from './types'
-import { UserModel } from '../db/models'
+import { UserModel, UserRoleModel } from '../db/models'
 import User, { RegisterModel } from '../db/models/user'
 
 // 获取全部用户
@@ -66,5 +66,20 @@ export const removeUserService = async (id: number) => {
 
 // 删除与该用户相关联记录
 export const destoryUserRoleByUserID = async (id: number) => {
-    // const result = await UserR
+    const result = await UserRoleModel.destroy({
+        where: {
+            user_id: id
+        }
+    })
+    return result
+}
+
+// 分配用户角色
+export const allocUserRoleService = async (id: number, data: number[]) => {
+    const roles = data.map(rid => ({
+        user_id: id,
+        role_id: rid
+    }))
+    const result = await UserRoleModel.bulkCreate(roles)
+    return result
 }

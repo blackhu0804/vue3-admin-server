@@ -1,14 +1,15 @@
-import { RegisterModel } from '../db/models/user'
-import { getUserInfo, createUser }  from '../services/auth'
-import { ErrorResponse, SuccessResponse } from '../utils/Response'
+import { getUserInfo, createUser, getUserInfoAndRoles }  from '../services/auth'
+import { createErrorResponse, ErrorResponse, SuccessResponse } from '../utils/Response'
 import errorInfo  from '../constants/errorInfo'
 import { createMd5 } from '../utils/createMD5'
-import { createToken } from '../utils/token'
+import { createToken, getInfoByToken } from '../utils/token'
+import { RegisterPropsWithRoles } from './types'
+import { allocUserRoleService } from '../services/user'
 
-const { registerUserNameExistInfo, registerFailInfo, loginFailInfo } = errorInfo
+const { registerUserNameExistInfo, registerFailInfo, loginFailInfo, getUserInfoFailInfo, accountForbiddenFailInfo } = errorInfo
 
-export const registerController = async (params: RegisterModel) => {
-  const { username, password } =  params;
+export const registerController = async (params: RegisterPropsWithRoles) => {
+  const { username, password = '111111' } =  params;
 
   // 先判断是否注册过
   const userInfo = await getUserInfo({ username })
@@ -17,12 +18,15 @@ export const registerController = async (params: RegisterModel) => {
     return new ErrorResponse(code, message)
   }
 
+  const { roleIds = [] } = params
+
   try {
-    await createUser({
+    const result = await createUser({
       ...params,
       password: createMd5(password)
     })
-    return new SuccessResponse({})
+    await allocUserRoleService(result.id, roleIds)
+    return new SuccessResponse(result)
   } catch (error) {
     // 注册失败
     console.log(error.message, error.stack)
@@ -40,6 +44,10 @@ export const loginController = async (params: loginModel) => {
   const { username, password } = params
 
   const userInfo = await getUserInfo({ username, password})
+  if (userInfo && !userInfo.status) {
+    return createErrorResponse(accountForbiddenFailInfo)
+  }
+
   if (userInfo) {
     const { id, username } = userInfo
     const token = createToken({
@@ -50,6 +58,23 @@ export const loginController = async (params: loginModel) => {
     return new SuccessResponse({token})
   }
 
-  const { code, message } = loginFailInfo
-  return new ErrorResponse(code, message)
+  return createErrorResponse(loginFailInfo)
+}
+
+interface UserTokenInfo {
+  id: number;
+  username: string;
+}
+
+export const UserInfoController = async (params = '') => {
+  const token = params.split(' ')[1]
+  if (token) {
+    const tokenInfo = await getInfoByToken<UserTokenInfo>(token)
+    if (tokenInfo) {
+      const { id } = tokenInfo
+      const userInfo = await getUserInfoAndRoles(id)
+      return new SuccessResponse(userInfo)
+    }
+  }
+  return createErrorResponse(getUserInfoFailInfo)
 }
